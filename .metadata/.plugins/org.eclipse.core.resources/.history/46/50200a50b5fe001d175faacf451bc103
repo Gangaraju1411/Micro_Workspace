@@ -1,0 +1,58 @@
+package com.ashokit.service;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import com.twilio.Twilio;
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.rest.lookups.v1.PhoneNumber;
+
+@Service
+public class SmsService {
+
+	
+	 @Value("${twilio.account-sid}")
+	    private String accountSid;
+
+	    @Value("${twilio.auth-token}")
+	    private String authToken;
+
+	    @Value("${twilio.phone-number}")
+	    private String fromPhoneNumber;
+
+	    public String generateOtp() {
+	        int otpLength = 6;
+	        boolean useLetters = false;
+	        boolean useNumbers = true;
+
+	        return RandomStringUtils.random(otpLength, useLetters, useNumbers);
+	    }
+
+	    
+	    
+	    public void sendOtp(String toPhoneNumber, String otp) {
+	        Twilio.init(accountSid, authToken);
+
+	        String messageBody = "Your OTP is: " + otp;
+
+	        Message message = Message.creator(
+	                new PhoneNumber(toPhoneNumber),
+	                new PhoneNumber(fromPhoneNumber),
+	                messageBody
+	        ).create();
+
+	        System.out.println("OTP sent with SID: " + message.getSid());
+	    }
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+}

@@ -1,0 +1,22 @@
+package com.ashokit.entity.binding;
+
+import javax.persistence.Column;
+
+public class PlanForm {
+
+	
+	
+	private String planName;
+	
+	private String startDate;
+	
+	private String endDate;
+	
+	
+	
+	
+	
+	
+	
+	
+}

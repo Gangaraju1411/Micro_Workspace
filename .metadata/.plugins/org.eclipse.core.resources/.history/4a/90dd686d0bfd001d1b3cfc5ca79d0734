@@ -1,0 +1,5 @@
+package com.ashokit.repo;
+
+public class AdminRespository {
+
+}

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename field &apos;otpService&apos; in &apos;com.ashokit.controller.OtpController&apos; to &apos;service&apos;&#x0D;&#x0A;- Original project: &apos;MobileOTP&apos;&#x0D;&#x0A;- Original element: &apos;com.ashokit.controller.OtpController.otpService&apos;&#x0D;&#x0A;- Renamed element: &apos;com.ashokit.controller.OtpController.service&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" delegate="false" deprecate="false" description="Rename field &apos;otpService&apos;" flags="589826" getter="false" id="org.eclipse.jdt.ui.rename.field" input="/src\/main\/java&lt;com.ashokit.controller{OtpController.java[OtpController^otpService" name="service" references="true" setter="false" stamp="1685430447444" textual="true" version="1.0"/>
+</session>

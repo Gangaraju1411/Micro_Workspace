@@ -1,0 +1,12 @@
+package com.ashokit.controller;
+
+import com.twilio.type.PhoneNumber;
+
+import lombok.Data;
+
+PhoneNumber
+public class OtpRequest {
+	
+	private Long toPhoneNumber;
+
+}

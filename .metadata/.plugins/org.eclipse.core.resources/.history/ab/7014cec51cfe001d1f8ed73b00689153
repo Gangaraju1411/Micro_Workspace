@@ -1,0 +1,16 @@
+package com.ait.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import com.ait.userentity.CaseWorkerEntity;
+
+public interface UserRepository extends JpaRepository<CaseWorkerEntity, Integer> {
+
+	@Query(value = "select * from CaseWorkerEntity where role = 'CaseWorker'")
+	public List<CaseWorkerEntity> getAllCaseWorkers();
+
+	public CaseWorkerEntity findByEmail(String email);
+}

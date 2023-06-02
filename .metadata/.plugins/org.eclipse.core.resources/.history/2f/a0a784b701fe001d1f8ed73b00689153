@@ -1,0 +1,262 @@
+package com.ait.userserviceimpl;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.ait.bindingclasses.CaseWorkerForm;
+import com.ait.bindingclasses.CaseWorkerUnlockAccount;
+import com.ait.bindingclasses.Plans;
+import com.ait.bindingclasses.ResetPassword;
+import com.ait.bindingclasses.UserLogin;
+import com.ait.repository.PlansRepo;
+import com.ait.repository.UserRepository;
+import com.ait.userentity.CaseWorkerEntity;
+import com.ait.userentity.UserPlans;
+import com.ait.userservice.UserService;
+import com.ait.utilityclasses.EmailSender;
+import com.ait.utilityclasses.OTPGenerator;
+import com.ait.utilityclasses.PasswordGenerator;
+
+@Service
+public class UserServiceImpl implements UserService {
+
+	@Autowired
+	private UserRepository userRepo;
+
+	@Autowired
+	private PasswordGenerator pwdGenerator;
+
+	@Autowired
+	private EmailSender emailSender;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
+	@Autowired
+	private OTPGenerator otpGenerator;
+
+	@Autowired
+	private PlansRepo planRepo;
+
+	@Override
+	public String userLogin(UserLogin login) {
+
+		CaseWorkerEntity entity = userRepo.findByuserEmail(login.getUserEmail());
+
+		String password = entity.getPazzword();
+		if (passwordEncoder.matches(login.getPazzword(), password)) {
+
+			if (entity.getRole().equalsIgnoreCase("Admin")) {
+
+				return "Admin login successfully";
+			} else {
+
+				return "caseworker login successfully";
+			}
+		} else {
+			return "invalid credentials";
+		}
+
+	}
+
+	@Override
+	public String saveCaseWorkerDetails(CaseWorkerForm form) {
+
+		if (form.getUserId() != null) {
+			Optional<CaseWorkerEntity> entity = userRepo.findById(form.getUserId());
+
+			// .orElseThrow(() -> new IllegalArgumentException("Invalid user ID"));
+
+			copyNonNullProperties(form, entity);
+			userRepo.save(entity);
+
+			return null;
+
+		}
+	}
+
+	@Override
+	public void copyNonNullProperties(Object src, Object target) {
+
+		BeanUtils.copyProperties(src, target, getNullPropertyNames(src));
+	}
+
+	@Override
+	public String[] getNullPropertyNames(Object source) {
+
+		final BeanWrapper srcWrapper = new BeanWrapperImpl(source);
+		java.beans.PropertyDescriptor[] pds = srcWrapper.getPropertyDescriptors();
+
+		Set<String> emptyNames = new HashSet<>();
+		for (java.beans.PropertyDescriptor pd : pds) {
+			Object srcValue = srcWrapper.getPropertyValue(pd.getName());
+			if (srcValue == null) {
+				emptyNames.add(pd.getName());
+			}
+		}
+		String[] result = new String[emptyNames.size()];
+		return emptyNames.toArray(result);
+	}
+
+	/*
+	 * 
+	 * if (signup.getUserId() != null) {
+	 * 
+	 * CaseWorkerEntity details = new CaseWorkerEntity(); BeanUtils.copyProperties(signup, details);
+	 * //details.setAccStatus("UNLOCKED"); userRepo.save(details);
+	 * 
+	 * return "CaseWorker Details Updated Succesfully";
+	 * 
+	 * }
+	 * 
+	 * CaseWorkerEntity details = new CaseWorkerEntity();
+	 * 
+	 * BeanUtils.copyProperties(signup, details);
+	 * 
+	 * String generatePassword = pwdGenerator.generatePassword();
+	 * details.setPazzword(generatePassword); details.setAccStatus("LOCKED");
+	 * details.setRole("CaseWorker");
+	 * 
+	 * userRepo.save(details);
+	 * 
+	 * String userEmail = details.getUserEmail();
+	 * 
+	 * String to = userEmail;
+	 * 
+	 * String subject = "IES Application";
+	 * 
+	 * String body = "<h1> Please click on below link to unlock your account</h1>" +
+	 * "<a href=\"http://localhost:9090/unlock?userEmail=" + to +
+	 * "\">Unlock your account</a>" + "<p>Your temporary password is:<strong>" +
+	 * generatePassword + "</string></p>";
+	 * 
+	 * emailSender.sendEmail(subject, body, to);
+	 * 
+	 * return "CaseWorker Details Saved Sucessfully and mail sent to user account";
+	 * 
+	 * }
+	 */
+
+	@Override
+	public String unlockCaseWorkerAccount(CaseWorkerUnlockAccount unlock) {
+
+		CaseWorkerEntity entity = userRepo.findByuserEmail(unlock.getUserEmail());
+
+		if (entity.getPazzword().equals(unlock.getTempPwd())) {
+
+			String encodedPassword = passwordEncoder.encode(unlock.getPazzword());
+
+			entity.setPazzword(encodedPassword);
+
+			entity.setAccStatus("UNLOCKED");
+
+			userRepo.save(entity);
+
+			return "Your Account Unlocked Successfull";
+
+		}
+		return null;
+
+	}
+
+	/**
+	 * @Override public String forgotPassword(ResetPassword reset,Integer userId) {
+	 *           // check record present in DB with that given email CaseWorkerEntity entity =
+	 *           userRepo.findByuserEmail(reset.getUserEmail());
+	 * 
+	 *           // if record not available return false if (entity == null) {
+	 * 
+	 *           return "please check your email"; } if (reset.getUserId() != null)
+	 *           { // if record is present in DB thensend the email along with the
+	 *           password String generateOTP = otpGenerator.generateOTP();
+	 * 
+	 *           CaseWorkerEntity details = new CaseWorkerEntity(); details.setOtp(generateOTP);
+	 *           userRepo.save(details);
+	 * 
+	 * 
+	 *           String subject = "Reset Password";
+	 * 
+	 *           String to = reset.getUserEmail();
+	 * 
+	 *           String body = "
+	 *           <h1>Please click on below link to unlock your account</h1>" + "<a
+	 *           href=\"http://localhost:9090/unlock?userEmail=" + to + "\">Unlock
+	 *           your account</a>" + "
+	 *           <p>
+	 *           Your One-Time-Password is:<strong>" + generateOTP + "</string>
+	 *           </p>
+	 *           ";
+	 * 
+	 *           emailSender.sendEmail(subject, body, to);
+	 * 
+	 *           return "email sent successfully"; } return null; }
+	 */
+	@Override
+	public String resetPassword(ResetPassword reset) {
+
+		CaseWorkerEntity entity = userRepo.findByuserEmail(reset.getUserEmail());
+
+		String encodedPassword = passwordEncoder.encode(reset.getPazzword());
+
+		entity.setPazzword(encodedPassword);
+
+		userRepo.save(entity);
+
+		return "password reset successfullt completed";
+	}
+
+	@Override
+	public List<CaseWorkerEntity> getAllCaseWorkers() {
+
+		List<CaseWorkerEntity> allCaseWorkers = userRepo.getAllCaseWorkers();
+
+		return allCaseWorkers;
+	}
+
+	@Override
+	public String savePlans(Plans plan) {
+
+		if (plan.getPlanId() != null) {
+			// Optional<ContactDetails> entity =
+			// contactrepo.findById(contact.getContactId());
+
+			// ContactDetails contactDetails = entity.get();
+
+			UserPlans details = new UserPlans();
+			BeanUtils.copyProperties(plan, details);
+
+			planRepo.save(details);
+
+			return "Plan Details Updated Succesfully";
+
+		}
+
+		UserPlans userplans = new UserPlans();
+
+		BeanUtils.copyProperties(plan, userplans);
+
+		planRepo.save(userplans);
+
+		return "Plan Details Saved Successfully";
+	}
+
+	@Override
+	public List<UserPlans> getAllPlans() {
+
+		List<UserPlans> allPlans = planRepo.findAll();
+
+		return allPlans;
+	}
+
+}

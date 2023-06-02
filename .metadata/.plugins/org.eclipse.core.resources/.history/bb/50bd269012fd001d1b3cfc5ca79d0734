@@ -1,0 +1,33 @@
+package com.ashokit.entity.binding;
+
+import javax.persistence.Column;
+
+public class CaseWorkerForm {
+
+	
+private Integer id;
+	
+	private String fullName;
+	
+	@Column(name="Email ID")
+	private String email;
+	
+	@Column(name="Mobile Number")
+	private Long number;
+	
+	@Column(name="Gender")
+	private String gender;
+	
+	@Column(name="DOB")
+	private String dob;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+}

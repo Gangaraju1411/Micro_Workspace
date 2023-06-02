@@ -1,0 +1,19 @@
+package com.ashokit.entity.binding;
+
+public class CaseWorkerForm {
+
+	private Integer id;
+
+	private String fullName;
+
+	private String email;
+
+	private Long number;
+
+	private String gender;
+
+	private String dob;
+	
+
+
+}

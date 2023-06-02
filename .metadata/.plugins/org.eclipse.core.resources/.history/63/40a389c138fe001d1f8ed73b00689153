@@ -1,0 +1,14 @@
+package com.ait.bindingclasses;
+
+import lombok.Data;
+
+@Data
+public class CaseWorkerUnlockAccount{
+	
+	private String email;
+	private String tempPwd;
+	private String pazzword;
+	private String confirmPwd;
+	
+
+}

@@ -1,0 +1,12 @@
+package com.ashokit.service;
+
+import com.ashokit.entity.CaseWorkerEntity;
+import com.ashokit.entity.CreatePlanEntity;
+
+public interface AdminService {
+
+	public String saveEmployee(CaseWorkerEntity form);
+	
+
+	public String savePlan (CreatePlanEntity form);
+}

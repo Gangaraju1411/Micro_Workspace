@@ -1,0 +1,5 @@
+package com.ashokit.config;
+
+public class ConfigSecurity {
+
+}

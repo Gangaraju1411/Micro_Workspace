@@ -1,0 +1,99 @@
+package com.ait.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.ait.bindingclasses.CaseWorkerForm;
+import com.ait.bindingclasses.CaseWorkerUnlockAccount;
+import com.ait.bindingclasses.Plans;
+import com.ait.bindingclasses.ResetPassword;
+import com.ait.bindingclasses.UserLogin;
+import com.ait.userentity.CaseWorkerEntity;
+import com.ait.userentity.UserPlans;
+import com.ait.userservice.UserService;
+
+@RestController
+public class UserController {
+
+	@Autowired
+	private UserService userService;
+
+	@PostMapping("/userlogin")
+	public ResponseEntity<String> userLogin(@RequestBody UserLogin login) {
+
+		String userLogin = userService.userLogin(login);
+
+		return new ResponseEntity<String>(userLogin, HttpStatus.OK);
+
+	}
+
+	@PostMapping(value = "/saveCaseWorker", consumes = "application/json", produces = "application/json")
+	public ResponseEntity<String> saveCaseWorker(@RequestBody CaseWorkerForm form) {
+
+		String msg = userService.saveCaseWorkerDetails(form);
+
+		return new ResponseEntity<String>(msg, HttpStatus.OK);
+
+	}
+
+	@PostMapping(value = "/unlock")
+	public ResponseEntity<String> unlockAccount(@RequestBody CaseWorkerUnlockAccount unlock) {
+
+		String caseWorkerAccount = userService.unlockCaseWorkerAccount(unlock);
+
+		return new ResponseEntity<String>(caseWorkerAccount, HttpStatus.OK);
+
+	}
+
+	/**
+	 * @PostMapping("/forgotpassword") public ResponseEntity<String>
+	 * forgotPassword(@RequestBody ResetPassword reset) {
+	 * 
+	 * String forgotPassword = userService.forgotPassword(reset);
+	 * 
+	 * return new ResponseEntity<String>(forgotPassword, HttpStatus.OK);
+	 * 
+	 * }
+	 */
+	@PostMapping("/resetPassword")
+	public ResponseEntity<String> resetPassword(@RequestBody ResetPassword reset) {
+
+		String resetPassword = userService.resetPassword(reset);
+
+		return new ResponseEntity<String>(resetPassword, HttpStatus.OK);
+
+	}
+
+	@GetMapping("/allWorkers")
+	public List<CaseWorkerEntity> allWorkers() {
+
+		List<CaseWorkerEntity> caseWorkers = userService.getAllCaseWorkers();
+
+		return caseWorkers;
+
+	}
+
+	@PostMapping("/savePlans")
+	public ResponseEntity<String> savePlans(@RequestBody Plans plans) {
+
+		String savePlans = userService.savePlans(plans);
+
+		return new ResponseEntity<String>(savePlans, HttpStatus.OK);
+
+	}
+	
+	@GetMapping("/allPlans")
+	public List<UserPlans> allPlans(){
+		
+		List<UserPlans> allPlans = userService.getAllPlans();
+		
+		return allPlans;
+	}
+}

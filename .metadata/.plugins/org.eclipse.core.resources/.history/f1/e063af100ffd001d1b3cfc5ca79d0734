@@ -1,0 +1,9 @@
+package com.ashokit.service;
+
+import com.ashokit.entity.CaseWorkerEntity;
+
+public interface CaseworkerService {
+	
+	public abstract String saveEmployee (CaseWorkerEntity form);
+
+}

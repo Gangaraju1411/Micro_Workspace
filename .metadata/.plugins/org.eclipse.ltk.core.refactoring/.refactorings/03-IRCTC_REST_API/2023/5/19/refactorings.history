@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy package &apos;com.irctc.swagger&apos; to &apos;04-PHONEBOOK_PROVIDER/src/main/java&apos;&#x0D;&#x0A;- Original project: &apos;03-IRCTC_REST_API&apos;&#x0D;&#x0A;- Destination element: &apos;04-PHONEBOOK_PROVIDER/src/main/java&apos;&#x0D;&#x0A;- Original element: &apos;03-IRCTC_REST_API/src/main/java/com.irctc.swagger&apos;" description="Copy package" destination="=04-PHONEBOOK_PROVIDER/src\/main\/java" element1="/src\/main\/java&lt;com.irctc.swagger" flags="589830" fragments="1" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyPackages" stamp="1683514249537" version="1.0"/>
+</session>

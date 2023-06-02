@@ -1,0 +1,10 @@
+server:
+  port: 9088
+
+
+
+
+app:
+  messages:
+    welcomeMsg: Welcome To AshokIT
+    greetMsg: Good Morning

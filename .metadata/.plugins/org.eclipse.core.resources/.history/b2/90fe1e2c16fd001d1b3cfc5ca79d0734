@@ -1,0 +1,37 @@
+package com.ashokit.service;
+
+import org.springframework.stereotype.Service;
+
+import com.ashokit.entity.CaseWorkerEntity;
+import com.ashokit.entity.CreatePlanEntity;
+import com.ashokit.entity.binding.CaseWorkerForm;
+import com.ashokit.entity.binding.PlanForm;
+
+@Service
+public class AdminServiceImpl implements AdminService {
+
+	@Override
+	public String saveEmployee(CaseWorkerForm form) {
+		
+		
+		
+		return null;
+	}
+
+	@Override
+	public String savePlan(PlanForm form) {
+		
+		
+		
+		
+		
+		return null;
+	}
+	
+	
+	
+	
+	
+	
+
+}

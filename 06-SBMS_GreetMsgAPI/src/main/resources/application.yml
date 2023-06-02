@@ -1,0 +1,19 @@
+
+  
+spring:
+  application:
+    name: GREET-API
+  boot:
+    admin:
+      client:
+        url: htttp://localhost:1111/
+        
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+        
+        
+       
+       

@@ -1,0 +1,32 @@
+package com.ait.userservice;
+
+import java.util.List;
+
+import com.ait.bindingclasses.CaseWorkerSignup;
+import com.ait.bindingclasses.CaseWorkerUnlockAccount;
+import com.ait.bindingclasses.Plans;
+import com.ait.bindingclasses.ResetPassword;
+import com.ait.bindingclasses.UserLogin;
+import com.ait.userentity.User;
+import com.ait.userentity.UserPlans;
+
+public interface UserService {
+	
+	public String userLogin(UserLogin login);
+	
+	public String saveCaseWorkerDetails(CaseWorkerSignup signup);
+	
+	public String unlockCaseWorkerAccount(CaseWorkerUnlockAccount unlock);
+	
+	//public String forgotPassword(ResetPassword reset,Integer userId);
+	
+	public String resetPassword(ResetPassword reset);
+	
+	public List<User> getAllCaseWorkers();	
+	
+	public String savePlans(Plans plan);
+	
+	public List<UserPlans> getAllPlans();
+	
+
+}
